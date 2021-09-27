@@ -1,5 +1,5 @@
 <!-- omit in toc -->
-## de  Frontend Dev assignment
+## de  Frontend Dev
 
 This project allows to asses potential frontend candidates with real, working code.
 
