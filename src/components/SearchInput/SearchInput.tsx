@@ -1,20 +1,20 @@
 import { FC, useContext, useEffect, useState } from "react";
-import { Context } from "../../Store";
 import {
   SearchInputBlock,
   SearchInputClose,
   SearchInputField,
 } from "../SearchInput.styles";
+import Context from "../../store/context";
 
 export const SearchInput: FC = () => {
   const [inputText, setInputText] = useState<string>("");
   const [checkInput, setCheckInput] = useState<boolean>(false);
-  const [state, dispatch] = useContext<any>(Context);
+  const [globalState, globalDispatch] = useContext(Context);
 
   const fetchData = async () => {
     const data = await fetch(`http://localhost:3000/search\?q\=`)
       .then((response) => response.json())
-      .then((data) => dispatch({ type: "getData", data }));
+      .then((data) => globalDispatch({ type: "getData", data }));
   };
 
   useEffect(() => {
@@ -31,14 +31,19 @@ export const SearchInput: FC = () => {
     setCheckInput(false);
   };
 
+  const onfocus = () => {
+    console.log('hello');
+  }
+
   return (
     <SearchInputBlock>
-      <SearchInputBlock role="search">
+      <SearchInputBlock>
         <SearchInputField
           type="text"
           value={inputText}
           placeholder={"Zoeken"}
           onChange={(e) => getResult(e.target.value)}
+          onFocus={() => onfocus()}
         />
         <SearchInputClose
           textAvailable={checkInput}

@@ -1,9 +1,7 @@
-import { FC, useReducer } from "react";
-import { initialState, reducer } from "../../hooks/useReducer";
+import { FC, useContext, useReducer } from "react";
+// import Context from "../../store/context";
 
 export const SearchResult: FC = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  console.log(state.result);
-  return <div>Hello</div>;
+  // const [globalState, globalDispatch] = useContext(Context);
+  return <div></div>;
 };
