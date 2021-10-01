@@ -1,11 +1,16 @@
-import { FC, memo } from "react";
+import { RefObject } from "react";
+import { FC, memo, useEffect, useRef } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { MakeBold } from "../../hooks/matchCharacter";
-import { SearchResultBlock, SearchResultComponent, SearchResultSpan } from "./SearchResult.styles";
+import { SearchNoResult, SearchResultBlock, SearchResultBlockShow, SearchResultComponent, SearchResultSpan } from "./SearchResult.styles";
 
 type SearchTerm = {
   searchterm: string;
   nrResults: number;
+}
+
+interface Event {
+  readonly target: EventTarget | null;
 }
 
 export const SearchResult: FC<SearchResultProps> = ({
@@ -14,20 +19,23 @@ export const SearchResult: FC<SearchResultProps> = ({
   currentResult,
   currentInputLength
 }) => {
+
+
   const getResult = currentResult.filter((item: SearchTerm) => item.searchterm.toLowerCase().match(currentInput))
 
   return (
     <SearchResultComponent>
-      {loadingData && currentInputLength > 2 && getResult.map((item: SearchTerm, index: number) => {
-        const currentResult = item.searchterm;
-        return (
-          <SearchResultBlock key={index} data-testid="search-result">
-            <MakeBold currentResult={item.searchterm} keyword={currentInput} />
-            <SearchResultSpan>{"(" + item.nrResults + ")"}</SearchResultSpan>
-          </SearchResultBlock>
-        )
-      })}
-    </SearchResultComponent>
+      {(loadingData && currentInputLength) ?
+        <SearchResultBlockShow>
+          {getResult.map((item: SearchTerm, index: number) => (
+            <SearchResultBlock key={index} >
+              <MakeBold currentResult={item.searchterm} keyword={currentInput} />
+              <SearchResultSpan>{"(" + item.nrResults + ")"}</SearchResultSpan>
+            </SearchResultBlock>
+          ))} </SearchResultBlockShow> : <SearchNoResult></SearchNoResult>
+      }
+
+    </SearchResultComponent >
   )
 };
 
@@ -36,7 +44,7 @@ const mapStateToProps = (state: any) => {
     currentInput: state.inputValue || "",
     currentResult: state.result?.suggestions || [],
     loadingData: state.loading,
-    currentInputLength: state.inputValue.length
+    currentInputLength: state.inputValue.length > 2
   };
 };
 

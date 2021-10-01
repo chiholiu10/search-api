@@ -7,12 +7,14 @@ export const GlobalStyleReset = createGlobalStyle(
       width: 100%;
       padding: 0;
       margin: 0;
+      box-sizing: content-box;
     }
     body {
       margin: 0;
       width: 100%;
       padding: 0;
       overflow-x: hidden;
+      box-sizing: content-box;
     }
     main {
       display: block;

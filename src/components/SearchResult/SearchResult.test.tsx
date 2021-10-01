@@ -1,53 +1,51 @@
-import { mount } from "enzyme";
+import '@testing-library/jest-dom';
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MockData } from "../../data/mockData";
 import { store } from "../../Store";
-import { screen } from "@testing-library/dom";
 import { SearchResult } from "./SearchResult";
-import { render } from "@testing-library/react";
-import '@testing-library/jest-dom';
 
 it("SearchResult Component test props", () => {
-    const wrap = mount(
+    const { queryByTestId } = render(
         <Provider store={store}>
-            <SearchResult currentInput={"test"} currentResult={MockData} loadingData={false} dispatch={jest.fn()} currentInputLength={1} />
+            <SearchResult currentInput={"test"} currentResult={MockData} loadingData={false} dispatch={jest.fn()} currentInputLength={false} />
         </Provider>
     );
-    const container = wrap.find(SearchResult).first();
-
-    expect(container.prop('currentInput')).toBe('test');
+    expect(queryByTestId("no-search-result")).toBeTruthy();
 });
 
-it("SearchResult Component loadingData props", () => {
-    render(
-        <SearchResult currentInput={"test"} currentResult={MockData} loadingData={false} dispatch={jest.fn()} currentInputLength={1} />
-    )
-    const checkWeatherData = screen.queryByTestId("search-result");
-});
-
-it("SearchResult Component loadingData props false", () => {
-    render(
-        <SearchResult currentInput={"test"} currentResult={MockData} loadingData={false} dispatch={jest.fn()} currentInputLength={1} />
+it("SearchResult Component no loadingData", () => {
+    const { queryByTestId } = render(
+        <Provider store={store}>
+            <SearchResult currentInput={"test"} currentResult={MockData} loadingData={true} dispatch={jest.fn()} currentInputLength={true} />
+        </Provider>
     );
-    const checkWeatherData = screen.queryByTestId("search-result");
+    expect(queryByTestId("search-result")).toBeTruthy();
+});
 
+it("SearchResult Component loadingData available", () => {
+    const { queryByTestId } = render(
+        <Provider store={store}>
+            <SearchResult currentInput={""} currentResult={MockData} loadingData={true} dispatch={jest.fn()} currentInputLength={true} />
+        </Provider>
+    );
+    expect(queryByTestId("search-result")).toBeTruthy();
 });
 
 it("SearchResult Component currentInputLength is 0 character", () => {
-    render(
+    const { queryByTestId } = render(
         <Provider store={store}>
-            <SearchResult currentInput={"test"} currentResult={MockData} loadingData={false} dispatch={jest.fn()} currentInputLength={1} />
+            <SearchResult currentInput={""} currentResult={MockData} loadingData={true} dispatch={jest.fn()} currentInputLength={true} />
         </Provider>
     );
-
-    const checkWeatherData = screen.queryByTestId("search-result");
-    console.log(checkWeatherData)
+    expect(queryByTestId("search-result")).toBeTruthy();
 });
 
 it("SearchResult Component currentInputLength is bigger than 2 characters", () => {
-    render(
-        <SearchResult currentInput={"test"} currentResult={MockData} loadingData={true} dispatch={jest.fn()} currentInputLength={2} />
+    const { queryByTestId } = render(
+        <Provider store={store}>
+            <SearchResult currentInput={"trui"} currentResult={MockData} loadingData={true} dispatch={jest.fn()} currentInputLength={true} />
+        </Provider>
     );
-
-    const checkWeatherData = screen.queryByTestId("search-result");
+    expect(queryByTestId("search-result")).toBeTruthy();
 });

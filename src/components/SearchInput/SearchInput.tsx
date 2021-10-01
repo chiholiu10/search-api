@@ -1,5 +1,7 @@
 import { FC, memo, useState } from "react";
 import {
+  SearchCloseIcon,
+  SearchIcon,
   SearchInputBlock,
   SearchInputClose,
   SearchInputField,
@@ -31,7 +33,6 @@ export const SearchInput: FC<SearchResultProps> = ({ currentInput, loadData }) =
       {loadData && (
         <SearchInputBlock toggleFocus={toggleFocus}>
           <SearchInputField
-            data-testid="search-input-field"
             type="text"
             aria-label="search-bar"
             placeholder={"Zoeken"}
@@ -45,8 +46,9 @@ export const SearchInput: FC<SearchResultProps> = ({ currentInput, loadData }) =
             textAvailable={checkInput}
             onClick={() => removeInputText()}
           >
-            X
+            <SearchCloseIcon src="/Images/close.png" alt="search-close" />
           </SearchInputClose>
+          <SearchIcon src="/Images/search.png" alt="search-icon" />
         </SearchInputBlock>
       )}
     </div>

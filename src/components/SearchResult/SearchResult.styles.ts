@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import theme from "../../styles/Themes";
 
-export const SearchResultBlock = styled.div.attrs({
-    'data-testid': 'search-result'
-})`
+export const SearchResultBlock = styled.div`
     display: inline-flex;
     border: 1px solid lightgrey;
     padding: 5px;
@@ -19,3 +16,12 @@ export const SearchResultSpan = styled.span`
 export const SearchResultComponent = styled.div`
      width: 100%;
 `;
+
+export const SearchNoResult = styled.div.attrs({
+    'data-testid': 'no-search-result'
+})``;
+
+
+export const SearchResultBlockShow = styled.div.attrs({
+    'data-testid': 'search-result'
+})``;

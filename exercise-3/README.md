@@ -18,4 +18,4 @@ Create a service that retrieves the data from the above mentioned API. This data
 [x] Given a valid input, then retrieve data;
 [x] Given data is retrieved successfully, then present results in a list;
 [x] Matching search query should be highlighted in results;
-- Unit test for above scenario's (including a stub for the network request).
+[] Unit test for above scenario's (including a stub for the network request). 
