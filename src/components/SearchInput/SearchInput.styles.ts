@@ -1,26 +1,24 @@
 import styled from "styled-components";
 
-export const SearchInputBlock = styled.form`
-    border: 1px solid lightgrey;
+export const SearchInputBlock = styled.div<{ toggleFocus: boolean }>`
+    border: 1px solid ${(props => props.toggleFocus === true ? "black" : "lightgrey")};
     min-width: 250px;
     max-width: 350px;
     width: 100%;
     padding: 5px 8px;
     position: relative;
-    display: flex;
+    display: inline-flex;
 `;
 
 export const SearchInputField = styled.input`
     border: none;
     width: 100%;
-    :focus {
+    &:focus {
         outline: none;
-        ${SearchInputBlock} {
-        }
     }
 `;
 
-export const SearchInputClose = styled.span<{textAvailable: boolean}>`
+export const SearchInputClose = styled.span<{ textAvailable: boolean }>`
     margin-right: 40px;
     :hover {
         cursor: pointer;

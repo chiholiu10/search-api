@@ -13,9 +13,9 @@ yarn start
 
 Create a service that retrieves the data from the above mentioned API. This data should be used to render the search suggestions. Search suggestions should be rendered according to the designs in excercise3.png. Pay attention to the following:
 
-- Search suggestions are shown when a user interacts with the search input;
-- Given a search query equal to or longer than 2 characters, then get the data;
-- Given a valid input, then retrieve data;
-- Given data is retrieved successfully, then present results in a list;
-- Matching search query should be highlighted in results;
+[x] Search suggestions are shown when a user interacts with the search input;
+[x] Given a search query equal to or longer than 2 characters, then get the data;
+[x] Given a valid input, then retrieve data;
+[x] Given data is retrieved successfully, then present results in a list;
+[x] Matching search query should be highlighted in results;
 - Unit test for above scenario's (including a stub for the network request).

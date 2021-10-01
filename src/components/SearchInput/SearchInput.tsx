@@ -1,57 +1,65 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, memo, useState } from "react";
 import {
   SearchInputBlock,
   SearchInputClose,
   SearchInputField,
-} from "../SearchInput.styles";
-import Context from "../../store/context";
+} from "./SearchInput.styles";
+import { connect, ConnectedProps, useDispatch } from "react-redux";
+import { clearInputValue, inputValue } from "../../actions";
+import { State } from "../../reducer/appReducer";
 
-export const SearchInput: FC = () => {
-  const [inputText, setInputText] = useState<string>("");
+export const SearchInput: FC<SearchResultProps> = ({ currentInput, loadData }) => {
+  const [toggleFocus, setToggleFocus] = useState<boolean>(false);
   const [checkInput, setCheckInput] = useState<boolean>(false);
-  const [globalState, globalDispatch] = useContext(Context);
-
-  const fetchData = async () => {
-    const data = await fetch(`http://localhost:3000/search\?q\=`)
-      .then((response) => response.json())
-      .then((data) => globalDispatch({ type: "getData", data }));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const dispatch = useDispatch();
 
   const getResult = (value: string) => {
-    setInputText(value);
+    dispatch(inputValue(value));
     setCheckInput(value.length > 0 ? true : false);
   };
 
   const removeInputText = () => {
-    setInputText("");
+    dispatch(clearInputValue());
     setCheckInput(false);
   };
 
-  const onfocus = () => {
-    console.log('hello');
-  }
+  const onfocus = () => setToggleFocus(true);
+  const removeOnfocus = () => setToggleFocus(false);
 
   return (
-    <SearchInputBlock>
-      <SearchInputBlock>
-        <SearchInputField
-          type="text"
-          value={inputText}
-          placeholder={"Zoeken"}
-          onChange={(e) => getResult(e.target.value)}
-          onFocus={() => onfocus()}
-        />
-        <SearchInputClose
-          textAvailable={checkInput}
-          onClick={() => removeInputText()}
-        >
-          X
-        </SearchInputClose>
-      </SearchInputBlock>
-    </SearchInputBlock>
+    <div>
+      {loadData && (
+        <SearchInputBlock toggleFocus={toggleFocus}>
+          <SearchInputField
+            data-testid="search-input-field"
+            type="text"
+            aria-label="search-bar"
+            placeholder={"Zoeken"}
+            name="search"
+            value={currentInput}
+            onChange={(e) => getResult(e.target.value)}
+            onFocus={() => onfocus()}
+            onBlur={() => removeOnfocus()}
+          />
+          <SearchInputClose
+            textAvailable={checkInput}
+            onClick={() => removeInputText()}
+          >
+            X
+          </SearchInputClose>
+        </SearchInputBlock>
+      )}
+    </div>
   );
 };
+
+const mapStateToProps = (state: State) => {
+  return {
+    currentInput: state.inputValue || "",
+    loadData: state.loading
+  };
+};
+
+const connector = connect(mapStateToProps);
+type SearchResultProps = ConnectedProps<typeof connector>;
+export default connector(memo(SearchInput));
